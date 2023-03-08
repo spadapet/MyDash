@@ -5,13 +5,16 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDash", "MyDash\MyDash.csproj", "{74B15237-D16E-4BC9-A890-0880850BEC52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyControls", "MyControls\MyControls.csproj", "{DC90818C-80A0-4791-A46C-84E62467A1A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDash.Controls", "MyDash.Controls\MyDash.Controls.csproj", "{DC90818C-80A0-4791-A46C-84E62467A1A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDash.Data", "MyDash.Data\MyDash.Data.csproj", "{42A9AEDB-3B08-4BCE-B6AB-509A56CDBC11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDash.Data", "MyDash.Data\MyDash.Data.csproj", "{42A9AEDB-3B08-4BCE-B6AB-509A56CDBC11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{D4E5A727-F65E-4F7B-BB67-52D9CC21DE1D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Config.props = Directory.Config.props
 		README.md = README.md
 	EndProjectSection
 EndProject

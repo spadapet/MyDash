@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyControls;
+namespace MyDash.Controls;
 
 public class PlatformClass1
 {

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net7.0;net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+    </PropertyGroup>
+
+    <Import Project="..\Directory.Config.props"/>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyDash.Data\MyDash.Data.csproj" />
+    </ItemGroup>
+
+</Project>
