@@ -10,36 +10,18 @@
     x:DataType="{x:Type model:ShellModel}"
     BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
     Shell.FlyoutBehavior="Locked"
-    Title="My Dashboard">
+    Title="My Dashboard"
+    Loaded="OnLoaded"
+    Unloaded="OnUnloaded">
 
     <Shell.Resources>
         <convert:ShellStateToFlyoutVisible x:Key="ShellStateToFlyoutVisible" />
         <convert:ShellStateToFlyoutEnabled x:Key="ShellStateToFlyoutEnabled" />
     </Shell.Resources>
 
-    <FlyoutItem
-        Route="Loading"
-        Title="Loading"
-        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Loading}"
-        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Loading}">
-        <ShellContent Title="Loading" ContentTemplate="{DataTemplate local:LoadingPage}" />
-    </FlyoutItem>
-
-    <FlyoutItem
-        Route="Login"
-        Title="Login"
-        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Login}"
-        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Login}">
-        <ShellContent Title="Login" ContentTemplate="{DataTemplate local:LoginPage}" />
-    </FlyoutItem>
-
-    <FlyoutItem
-        Route="Dashboard"
-        Title="Dashboard"
-        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Dashboard}"
-        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Dashboard}">
-        <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate local:MainPage}" />
-    </FlyoutItem>
+    <ShellContent Route="Loading" Title="Loading" ContentTemplate="{DataTemplate local:LoadingPage}" FlyoutItem.IsVisible="{Binding AppModel.State, Mode=OneWay, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Loading}" />
+    <ShellContent Route="Login" Title="Login" ContentTemplate="{DataTemplate local:LoginPage}" FlyoutItem.IsVisible="{Binding AppModel.State, Mode=OneWay, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Login}" />
+    <ShellContent Route="Dashboard" Title="Dashboard" ContentTemplate="{DataTemplate local:MainPage}" FlyoutItem.IsVisible="{Binding AppModel.State, Mode=OneWay, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Dashboard}" />
 
     <MenuItem Text="Settings" />
     <MenuItem Text="About" />

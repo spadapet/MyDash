@@ -14,6 +14,6 @@ public partial class LoadingPage : ContentPage
     private void OnLoaded(object sender, EventArgs args)
     {
         // Just go right to the login state since there is nothing to load yet
-        AppShell.Current.Model.State = ShellState.Login;
+        App.Current.Model.State = AppState.Login;
     }
 }

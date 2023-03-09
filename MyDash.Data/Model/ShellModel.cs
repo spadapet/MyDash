@@ -2,10 +2,10 @@
 
 public sealed class ShellModel : PropertyNotifier
 {
-    private ShellState state = ShellState.Loading;
-    public ShellState State
+    public AppModel AppModel { get; }
+
+    public ShellModel(AppModel appModel)
     {
-        get => this.state;
-        set => this.SetProperty(ref this.state, value);
+        this.AppModel = appModel;
     }
 }

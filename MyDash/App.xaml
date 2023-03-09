@@ -3,11 +3,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MyDash"
+    xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
     x:Class="MyDash.App"
     x:ClassModifier="internal">
-    <Application.MainPage>
-        <local:AppShell />
-    </Application.MainPage>
 
     <Application.Resources>
         <ResourceDictionary>
@@ -17,4 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
+
+    <Application.MainPage>
+        <local:AppShell />
+    </Application.MainPage>
+
 </Application>

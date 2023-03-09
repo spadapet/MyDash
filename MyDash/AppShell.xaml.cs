@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maui.Controls;
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
+using System;
 using System.ComponentModel;
 
 namespace MyDash;
@@ -13,26 +14,43 @@ public partial class AppShell : Shell
 
     public AppShell()
     {
-        this.Model = new ShellModel();
-        this.Model.PropertyChanged += this.OnModelPropertyChanged;
+        this.Model = new ShellModel(App.Current.Model);
         this.InitializeComponent();
+    }
+
+    private void OnLoaded(object sender, EventArgs args)
+    {
+        this.Model.PropertyChanged += this.OnModelPropertyChanged;
+        this.Model.AppModel.PropertyChanged += this.OnModelPropertyChanged;
+    }
+
+    private void OnUnloaded(object sender, EventArgs args)
+    {
+        this.Model.PropertyChanged -= this.OnModelPropertyChanged;
+        this.Model.AppModel.PropertyChanged -= this.OnModelPropertyChanged;
     }
 
     private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs args)
     {
         bool any = string.IsNullOrEmpty(args.PropertyName);
 
-        if (any || args.PropertyName == nameof(this.Model.State))
+        if (sender == this.Model)
         {
-            this.GoToState(this.Model.State);
+        }
+        else if (sender == this.Model.AppModel)
+        {
+            if (any || args.PropertyName == nameof(this.Model.AppModel.State))
+            {
+                this.GoToState(this.Model.AppModel.State);
+            }
         }
     }
 
-    private void GoToState(ShellState state)
+    private void GoToState(AppState state)
     {
         this.Dispatcher.Dispatch(() =>
         {
-            string route = $"/Enum.GetName(state)";
+            string route = $"///{Enum.GetName(state)}";
             TaskUtility.FileAndForget(() => this.GoToAsync(route));
         });
     }

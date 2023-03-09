@@ -11,19 +11,19 @@ namespace MyDash.Converter
         {
             string route = (string)parameter;
 
-            return (ShellState)value switch
+            return (AppState)value switch
             {
-                ShellState.Loading => route switch
+                AppState.Loading => route switch
                 {
                     "Loading" => true,
                     _ => false
                 },
-                ShellState.Login => route switch
+                AppState.Login => route switch
                 {
                     "Login" => true,
                     _ => false
                 },
-                ShellState.Dashboard => true,
+                AppState.Dashboard => true,
                 _ => throw new InvalidOperationException()
             };
         }
@@ -35,11 +35,11 @@ namespace MyDash.Converter
         {
             string route = (string)parameter;
 
-            return (ShellState)value switch
+            return (AppState)value switch
             {
-                ShellState.Loading => true,
-                ShellState.Login => true,
-                ShellState.Dashboard => route switch
+                AppState.Loading => true,
+                AppState.Login => true,
+                AppState.Dashboard => route switch
                 {
                     "Dashboard" => true,
                     _ => false

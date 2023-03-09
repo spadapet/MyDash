@@ -1,6 +1,6 @@
 ﻿namespace MyDash.Data.Model;
 
-public enum ShellState
+public enum AppState
 {
     Loading,
     Login,
