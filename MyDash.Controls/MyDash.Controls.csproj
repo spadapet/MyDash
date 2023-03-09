@@ -7,7 +7,7 @@
         <SingleProject>true</SingleProject>
     </PropertyGroup>
 
-    <Import Project="..\Directory.Config.props"/>
+    <Import Project="..\Directory.Config.props" />
 
     <ItemGroup>
         <ProjectReference Include="..\MyDash.Data\MyDash.Data.csproj" />

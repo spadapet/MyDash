@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyDash.Data;
+namespace MyDash.Data.Utility;
 
 public static class ExceptionUtility
 {

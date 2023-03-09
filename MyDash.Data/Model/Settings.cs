@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace MyDash.Data;
+namespace MyDash.Data.Model;
 
 public sealed class Settings : PropertyNotifier, ICloneable
 {

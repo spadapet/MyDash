@@ -15,7 +15,7 @@
         <ApplicationVersion>1</ApplicationVersion>
     </PropertyGroup>
 
-    <Import Project="..\Directory.Config.props"/>
+    <Import Project="..\Directory.Config.props" />
 
     <ItemGroup>
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -33,6 +33,24 @@
     <ItemGroup>
         <ProjectReference Include="..\MyDash.Data\MyDash.Data.csproj" />
         <ProjectReference Include="..\MyDash.Controls\MyDash.Controls.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="LoginPage.xaml.cs">
+        <DependentUpon>LoginPage.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="LoadingPage.xaml.cs">
+        <DependentUpon>LoadingPage.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="LoginPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="LoadingPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
 
 </Project>

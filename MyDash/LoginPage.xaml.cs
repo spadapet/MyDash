@@ -2,10 +2,10 @@
 
 namespace MyDash;
 
-public partial class App : Application
+public partial class LoginPage : ContentPage
 {
-	public App()
-	{
+    public LoginPage()
+    {
         this.InitializeComponent();
-	}
+    }
 }

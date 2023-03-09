@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="MyDash.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MyDash"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:convert="clr-namespace:MyDash.Converter"
+    xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
+    x:Class="MyDash.AppShell"
+    x:ClassModifier="internal"
+    x:DataType="{x:Type model:ShellModel}"
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
+    Shell.FlyoutBehavior="Locked"
+    Title="My Dashboard">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.Resources>
+        <convert:ShellStateToFlyoutVisible x:Key="ShellStateToFlyoutVisible" />
+        <convert:ShellStateToFlyoutEnabled x:Key="ShellStateToFlyoutEnabled" />
+    </Shell.Resources>
+
+    <FlyoutItem
+        Route="Loading"
+        Title="Loading"
+        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Loading}"
+        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Loading}">
+        <ShellContent Title="Loading" ContentTemplate="{DataTemplate local:LoadingPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Route="Login"
+        Title="Login"
+        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Login}"
+        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Login}">
+        <ShellContent Title="Login" ContentTemplate="{DataTemplate local:LoginPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem
+        Route="Dashboard"
+        Title="Dashboard"
+        IsVisible="{Binding State, Converter={StaticResource ShellStateToFlyoutVisible}, ConverterParameter=Dashboard}"
+        IsEnabled="{Binding State, Converter={StaticResource ShellStateToFlyoutEnabled}, ConverterParameter=Dashboard}">
+        <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate local:MainPage}" />
+    </FlyoutItem>
+
+    <MenuItem Text="Settings" />
+    <MenuItem Text="About" />
 
 </Shell>
