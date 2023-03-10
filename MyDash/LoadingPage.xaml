@@ -6,10 +6,9 @@
     x:ClassModifier="internal"
     Loaded="OnLoaded">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20">
-            <Label Text="Loading" HorizontalOptions="Center" />
-        </VerticalStackLayout>
-    </ScrollView>
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+        <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
+        <Label Text="Loading..." HorizontalOptions="Center" />
+    </VerticalStackLayout>
 
 </ContentPage>

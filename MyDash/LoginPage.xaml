@@ -5,10 +5,9 @@
     x:Class="MyDash.LoginPage"
     x:ClassModifier="internal">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20">
-            <Label Text="Login" HorizontalOptions="Center" />
-        </VerticalStackLayout>
-    </ScrollView>
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+        <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
+        <Label Text="Logging in..." HorizontalOptions="Center" />
+    </VerticalStackLayout>
 
 </ContentPage>

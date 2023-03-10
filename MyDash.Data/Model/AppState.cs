@@ -2,6 +2,7 @@
 
 public enum AppState
 {
+    None,
     Loading,
     Login,
     Dashboard,
