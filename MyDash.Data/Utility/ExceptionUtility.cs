@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyDash.Data.Utility;
 
 public static class ExceptionUtility
 {
+    public static string FlattenMessages(this Exception exception) => string.Join(" --> ", exception.Flatten().Select(e => e.Message));
+
     public static IEnumerable<Exception> Flatten(this Exception exception)
     {
         if (exception == null)

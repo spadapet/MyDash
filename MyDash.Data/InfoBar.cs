@@ -1,6 +1,7 @@
 ﻿using MyDash.Data.Utility;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MyDash.Data;
 
@@ -62,7 +63,7 @@ public sealed class InfoBar : PropertyNotifier, IInfoBar
         if (string.IsNullOrEmpty(text))
         {
             // Combine the messages of all aggregate and inner exceptions into a single string.
-            text = string.Join(" --> ", exception.Flatten().Select(e => e.Message));
+            text = exception.FlattenMessages();
         }
 
         exception = exception.Flatten().FirstOrDefault();

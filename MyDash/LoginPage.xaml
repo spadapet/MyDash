@@ -2,12 +2,50 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:convert="clr-namespace:MyDash.Controls.Converter;assembly=MyDash.Controls"
+    xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
     x:Class="MyDash.LoginPage"
-    x:ClassModifier="internal">
+    x:ClassModifier="internal"
+    x:DataType="{x:Type model:LoginModel}"
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
+    Loaded="OnLoaded"
+    Unloaded="OnUnloaded">
 
-    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
-        <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
-        <Label Text="Logging in..." HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.Resources>
+        <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <!--<VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">-->
+        <VerticalStackLayout x:Name="NormalLayout" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+            <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
+            <Label Text="Logging in..." HorizontalOptions="Center" ToolTipProperties.Text="Hello" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout x:Name="FailureLayout" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
+            <Label Text="Error:" />
+            <Border>
+                <ScrollView WidthRequest="300" HeightRequest="200" Margin="4">
+                    <Label Text="{Binding ErrorMessage}" />
+                </ScrollView>
+            </Border>
+            <Button Text="Retry" HorizontalOptions="Center" Margin="0,16,0,0" />
+        </VerticalStackLayout>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="CommonStates">
+                <VisualState x:Name="Normal" />
+                <VisualState x:Name="Failure">
+                    <VisualState.Setters>
+                        <Setter TargetName="NormalLayout" Property="IsVisible" Value="False" />
+                        <Setter TargetName="FailureLayout" Property="IsVisible" Value="True" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{Binding HasError}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
 
 </ContentPage>
