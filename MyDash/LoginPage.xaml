@@ -14,15 +14,15 @@
     <ContentPage.Resources>
         <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
-
+    
     <Grid>
-        <!--<VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">-->
-        <VerticalStackLayout x:Name="NormalLayout" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+        <VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
             <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
             <Label Text="Logging in..." HorizontalOptions="Center" ToolTipProperties.Text="Hello" />
+            <Button Text="Cancel" HorizontalOptions="Center" />
         </VerticalStackLayout>
 
-        <VerticalStackLayout x:Name="FailureLayout" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
+        <VerticalStackLayout x:Name="FailureLayout" IsVisible="{Binding HasError}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
             <Label Text="Error:" />
             <Border>
                 <ScrollView WidthRequest="300" HeightRequest="200" Margin="4">
@@ -32,13 +32,12 @@
             <Button Text="Retry" HorizontalOptions="Center" Margin="0,16,0,0" />
         </VerticalStackLayout>
 
+        <!-- Visual states don't work, the change gets undone immediately -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="CommonStates">
                 <VisualState x:Name="Normal" />
                 <VisualState x:Name="Failure">
                     <VisualState.Setters>
-                        <Setter TargetName="NormalLayout" Property="IsVisible" Value="False" />
-                        <Setter TargetName="FailureLayout" Property="IsVisible" Value="True" />
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <StateTrigger IsActive="{Binding HasError}" />
