@@ -14,4 +14,11 @@ public sealed class AppModel : PropertyNotifier
         get => this.state;
         set => this.SetProperty(ref this.state, value);
     }
+
+    private AdoModel adoModel;
+    public AdoModel AdoModel
+    {
+        get => this.adoModel;
+        set => this.SetProperty(ref this.adoModel, value);
+    }
 }
