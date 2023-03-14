@@ -2,6 +2,7 @@
 <Application
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:convert="clr-namespace:MyDash.Controls.Converter;assembly=MyDash.Controls"
     xmlns:local="clr-namespace:MyDash"
     xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
     x:Class="MyDash.App"
@@ -14,6 +15,10 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Global converters -->
+            <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <convert:ObjectToArrayConverter x:Key="ObjectToArrayConverter" />
+            
         </ResourceDictionary>
     </Application.Resources>
 

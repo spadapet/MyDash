@@ -1,6 +1,8 @@
 ﻿using Microsoft.Maui.Controls;
 using MyDash.Data.Model;
+using MyDash.Data.Utility;
 using System;
+using System.Threading.Tasks;
 
 namespace MyDash;
 
@@ -13,7 +15,22 @@ public partial class LoadingPage : ContentPage
 
     private void OnLoaded(object sender, EventArgs args)
     {
-        // Just go right to the login state since there is nothing to load yet
+        this.StartLoad();
+    }
+
+    private void StartLoad()
+    {
+        TaskUtility.FileAndForget(this.Load);
+    }
+
+    private Task Load()
+    {
+        // TODO: Load settings from diskS
+        //Settings settings = Settings.Deserialize(...);
+        //App.Current.Model.Settings.CopyFrom(settings);
+
         App.Current.Model.State = AppState.Login;
+
+        return Task.CompletedTask;
     }
 }

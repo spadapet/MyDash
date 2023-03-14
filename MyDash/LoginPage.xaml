@@ -2,7 +2,6 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:convert="clr-namespace:MyDash.Controls.Converter;assembly=MyDash.Controls"
     xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
     x:Class="MyDash.LoginPage"
     x:ClassModifier="internal"
@@ -11,15 +10,18 @@
     Loaded="OnLoaded"
     Unloaded="OnUnloaded">
 
-    <ContentPage.Resources>
-        <convert:InverseBoolConverter x:Key="InverseBoolConverter" />
-    </ContentPage.Resources>
-    
     <Grid>
         <VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
             <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
-            <Label Text="Logging in..." HorizontalOptions="Center" ToolTipProperties.Text="Hello" />
-            <Button Text="Cancel" HorizontalOptions="Center" />
+            <Label HorizontalOptions="Center" ToolTipProperties.Text="Hello">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Logging in " />
+                        <Span Text="{Binding AppModel.AdoModel.Authentication.UserName, FallbackValue='...', TargetNullValue='...'}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Button Text="Cancel" HorizontalOptions="Center" Clicked="OnCancelClicked" />
         </VerticalStackLayout>
 
         <VerticalStackLayout x:Name="FailureLayout" IsVisible="{Binding HasError}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="4">
@@ -29,7 +31,7 @@
                     <Label Text="{Binding ErrorMessage}" />
                 </ScrollView>
             </Border>
-            <Button Text="Retry" HorizontalOptions="Center" Margin="0,16,0,0" />
+            <Button Text="Retry" HorizontalOptions="Center" Margin="0,16,0,0" Clicked="OnRetryClicked" />
         </VerticalStackLayout>
 
         <!-- Visual states don't work, the change gets undone immediately -->

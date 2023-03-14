@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDash.Data.Utility;
 
-public static class AdoAuthenticationUtility
+public static class AdoConnectionUtility
 {
     // Cross platform Token Cache:
     // https://github.com/AzureAD/microsoft-authentication-extensions-for-dotnet/wiki/Cross-platform-Token-Cache
@@ -30,31 +30,31 @@ public static class AdoAuthenticationUtility
     private static readonly KeyValuePair<string, string> LinuxKeyRingAttr1 = new("Version", "1");
     private static readonly KeyValuePair<string, string> LinuxKeyRingAttr2 = new("ProductGroup", "MyApps");
 
-    public static async Task<AdoAuthentication> GetAuthenticationAsync(CancellationToken cancellationToken)
+    public static async Task<AdoConnection> GetConnectionAsync(CancellationToken cancellationToken)
     {
         // Initialize the MSAL library by building a public client application
         IPublicClientApplication application = PublicClientApplicationBuilder
-            .Create(AdoAuthenticationUtility.VisualStudioIdeClientId)
-            .WithAuthority(AdoAuthenticationUtility.Authority)
+            .Create(AdoConnectionUtility.VisualStudioIdeClientId)
+            .WithAuthority(AdoConnectionUtility.Authority)
             .WithDefaultRedirectUri()
             .Build();
 
-        StorageCreationProperties storageProperties = new StorageCreationPropertiesBuilder(AdoAuthenticationUtility.TokenCacheFileName, MsalCacheHelper.UserRootDirectory)
+        StorageCreationProperties storageProperties = new StorageCreationPropertiesBuilder(AdoConnectionUtility.TokenCacheFileName, MsalCacheHelper.UserRootDirectory)
             .WithLinuxKeyring(
-                AdoAuthenticationUtility.LinuxKeyRingSchema,
-                AdoAuthenticationUtility.LinuxKeyRingCollection,
-                AdoAuthenticationUtility.LinuxKeyRingLabel,
-                AdoAuthenticationUtility.LinuxKeyRingAttr1,
-                AdoAuthenticationUtility.LinuxKeyRingAttr2)
+                AdoConnectionUtility.LinuxKeyRingSchema,
+                AdoConnectionUtility.LinuxKeyRingCollection,
+                AdoConnectionUtility.LinuxKeyRingLabel,
+                AdoConnectionUtility.LinuxKeyRingAttr1,
+                AdoConnectionUtility.LinuxKeyRingAttr2)
             .WithMacKeyChain(
-                AdoAuthenticationUtility.KeyChainServiceName,
-                AdoAuthenticationUtility.KeyChainAccountName)
+                AdoConnectionUtility.KeyChainServiceName,
+                AdoConnectionUtility.KeyChainAccountName)
             .Build();
 
         MsalCacheHelper cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
         cacheHelper.RegisterCache(application.UserTokenCache);
 
-        string[] scopes = new string[] { AdoAuthenticationUtility.AzureDevOpsScope };
+        string[] scopes = new string[] { AdoConnectionUtility.AzureDevOpsScope };
         AuthenticationResult authentication;
         try
         {
@@ -66,7 +66,7 @@ public static class AdoAuthenticationUtility
             authentication = await application.AcquireTokenInteractive(scopes).WithClaims(ex.Claims).ExecuteAsync();
         }
 
-        return new AdoAuthentication()
+        return new AdoConnectionInternal()
         {
             AccessToken = authentication.AccessToken,
             UserName = authentication.Account.Username,

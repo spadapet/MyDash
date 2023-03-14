@@ -2,42 +2,34 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MyDash"
+    xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
+    xmlns:sel="clr-namespace:MyDash.Selectors"
     x:Class="MyDash.MainPage"
-    x:ClassModifier="internal">
+    x:ClassModifier="internal"
+    x:DataType="{x:Type model:MainModel}"
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="PullRequestsTemplate" x:DataType="{x:Type model:AppState}">
+            <local:PullRequestsPage />
+        </DataTemplate>
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+        <sel:MainTemplateSelector x:Key="MainTemplateSelector">
+            <sel:MainTemplateSelector.PullRequestsTemplate>
+                <x:StaticResource Key="PullRequestsTemplate" />
+            </sel:MainTemplateSelector.PullRequestsTemplate>
+        </sel:MainTemplateSelector>
+    </ContentPage.Resources>
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
+    <VerticalStackLayout Margin="8">
+        <HorizontalStackLayout Margin="0,0,0,8">
+            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentProject}" />
+        </HorizontalStackLayout>
+        <Grid
+            BindableLayout.ItemsSource="{Binding AppModel.State, Converter={StaticResource ObjectToArrayConverter}}"
+            BindableLayout.ItemTemplateSelector="{StaticResource MainTemplateSelector}" />
+    </VerticalStackLayout>
 
 </ContentPage>

@@ -7,8 +7,8 @@ public sealed class AdoModel : PropertyNotifier
 {
     public ObservableCollection<AdoAccount> Accounts { get; } = new();
 
-    private AdoAuthentication authentication;
-    public AdoAuthentication Authentication
+    private AdoConnection authentication;
+    public AdoConnection Authentication
     {
         get => this.authentication;
         set => this.SetProperty(ref this.authentication, value);
@@ -21,6 +21,6 @@ public sealed class AdoModel : PropertyNotifier
             ? this.currentAccount
             : this.Accounts.FirstOrDefault();
 
-        set => this.currentAccount = value;
+        set => this.SetProperty(ref this.currentAccount, value);
     }
 }

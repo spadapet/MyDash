@@ -27,8 +27,24 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\MyDash.Data\MyDash.Data.csproj" />
         <ProjectReference Include="..\MyDash.Controls\MyDash.Controls.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="PullRequestsPage.xaml.cs">
+        <DependentUpon>PullRequestsPage.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="PullRequestsPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
 
 </Project>

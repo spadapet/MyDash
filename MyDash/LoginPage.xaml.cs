@@ -1,11 +1,8 @@
-﻿using Microsoft.Identity.Client;
-using Microsoft.Maui.Controls;
-using Microsoft.VisualStudio.Services.Account;
+﻿using Microsoft.Maui.Controls;
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,8 +21,7 @@ public partial class LoginPage : ContentPage
 
     private void OnLoaded(object sender, EventArgs args)
     {
-        this.cancellationTokenSource = new CancellationTokenSource();
-        TaskUtility.FileAndForget(() => this.Login(this.cancellationTokenSource.Token));
+        this.StartLogin();
     }
 
     private void OnUnloaded(object sender, EventArgs args)
@@ -34,18 +30,51 @@ public partial class LoginPage : ContentPage
         this.cancellationTokenSource = null;
     }
 
+    private void StartLogin()
+    {
+        TaskUtility.FileAndForget(async () =>
+        {
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.Model.SetError(null);
+
+            try
+            {
+                await this.Login(this.cancellationTokenSource.Token);
+            }
+            catch (Exception ex)
+            {
+                this.Model.SetError(ex);
+                throw;
+            }
+            finally
+            {
+                this.cancellationTokenSource = null;
+            }
+        });
+    }
+
     private async Task Login(CancellationToken cancellationToken)
     {
-        AppModel appModel = this.Model.AppModel;
-        appModel.AdoAuthentication = await AdoAuthenticationUtility.GetAuthenticationAsync(cancellationToken);
-        List<Account> accounts = await AdoUtility.GetAccounts(appModel.AdoAuthentication, cancellationToken);
+        AdoModel adoModel = this.Model.AppModel.AdoModel;
+        adoModel.Authentication = await AdoConnectionUtility.GetConnectionAsync(cancellationToken);
+        IEnumerable<AdoAccount> accounts = await AdoUtility.GetAccounts(adoModel.Authentication, cancellationToken);
 
-        appModel.AdoAccounts.Clear();
-        foreach (Account account in accounts
-            .Where(a => a.AccountStatus == AccountStatus.None || a.AccountStatus == AccountStatus.Enabled)
-            .OrderBy(a => a.AccountName))
+        adoModel.Accounts.Clear();
+        foreach (AdoAccount account in accounts)
         {
-            appModel.AdoAccounts.Add(account);
+            adoModel.Accounts.Add(account);
         }
+
+        this.Model.AppModel.State = AppState.PullRequests;
+    }
+
+    private void OnCancelClicked(object sender, EventArgs args)
+    {
+        this.cancellationTokenSource?.Cancel();
+    }
+
+    private void OnRetryClicked(object sender, EventArgs args)
+    {
+        this.StartLogin();
     }
 }

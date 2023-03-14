@@ -120,4 +120,7 @@
   <data name="AppName" xml:space="preserve">
     <value>My Dashboard</value>
   </data>
+  <data name="DashboardName" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
 </root>

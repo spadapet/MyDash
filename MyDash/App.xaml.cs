@@ -70,12 +70,9 @@ public partial class App : Application
                 EnsureMainPage<LoginPage>();
                 break;
 
-            case AppState.Dashboard:
-                EnsureMainPage<AppShell>();
-                break;
-
             default:
-                throw new InvalidOperationException();
+                EnsureMainPage<MainPage>();
+                break;
         }
     }
 }

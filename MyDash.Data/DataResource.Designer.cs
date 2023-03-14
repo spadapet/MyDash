@@ -68,5 +68,14 @@ namespace MyDash.Data {
                 return ResourceManager.GetString("AppName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard.
+        /// </summary>
+        public static string DashboardName {
+            get {
+                return ResourceManager.GetString("DashboardName", resourceCulture);
+            }
+        }
     }
 }
