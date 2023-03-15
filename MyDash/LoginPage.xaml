@@ -7,8 +7,7 @@
     x:ClassModifier="internal"
     x:DataType="{x:Type model:LoginModel}"
     BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
-    Loaded="OnLoaded"
-    Unloaded="OnUnloaded">
+    Loaded="OnLoaded">
 
     <Grid>
         <VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
@@ -17,7 +16,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Logging in " />
-                        <Span Text="{Binding AppModel.AdoModel.Authentication.UserName, FallbackValue='...', TargetNullValue='...'}" />
+                        <Span Text="{Binding AppModel.AdoModel.Connection.UserName, FallbackValue='...', TargetNullValue='...'}" />
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

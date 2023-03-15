@@ -6,7 +6,8 @@
     x:Class="MyDash.PullRequestsPage"
     x:ClassModifier="internal"
     x:DataType="{x:Type model:PullRequestsModel}"
-    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}">
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
+    Loaded="OnLoaded">
 
     <Grid>
         <Label>Pull Requests</Label>

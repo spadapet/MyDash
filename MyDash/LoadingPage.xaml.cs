@@ -2,6 +2,7 @@
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyDash;
@@ -23,14 +24,10 @@ public partial class LoadingPage : ContentPage
         TaskUtility.FileAndForget(this.Load);
     }
 
-    private Task Load()
+    private async Task Load()
     {
-        // TODO: Load settings from diskS
-        //Settings settings = Settings.Deserialize(...);
-        //App.Current.Model.Settings.CopyFrom(settings);
+        await App.Current.LoadStateAsync(CancellationToken.None);
 
         App.Current.Model.State = AppState.Login;
-
-        return Task.CompletedTask;
     }
 }

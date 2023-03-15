@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Services.Account;
+﻿using Microsoft.TeamFoundation.Core.WebApi;
+using Microsoft.VisualStudio.Services.Account;
 using Microsoft.VisualStudio.Services.Account.Client;
 using Microsoft.VisualStudio.Services.OAuth;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -13,38 +14,74 @@ namespace MyDash.Data.Utility;
 
 public static class AdoUtility
 {
-    public static async Task<IEnumerable<AdoAccount>> GetAccounts(AdoConnection connection, CancellationToken cancellationToken)
+    public static async Task UpdateAccountsAsync(this AdoModel model, CancellationToken cancellationToken)
     {
-        VssOAuthAccessTokenCredential credentials = new VssOAuthAccessTokenCredential(connection.AccessToken);
+        var (accounts, defaultAccountName) = await AdoUtility.GetAccountsAsync(model.Connection, cancellationToken);
+        model.Accounts.SortedMerge(accounts);
+        string accountName = model.CurrentAccountName ?? defaultAccountName;
+        model.CurrentAccountName = accountName;
+    }
+
+    public static async Task UpdateProjectsAsync(AdoConnection connection, AdoAccount account, CancellationToken cancellationToken)
+    {
+        var (projects, defaultProjectName) = await AdoUtility.GetProjectsAsync(connection, account, cancellationToken);
+        account.Projects.SortedMerge(projects);
+
+        string projectName = account.CurrentProjectName ?? defaultProjectName;
+        account.CurrentProjectName = projectName;
+    }
+
+    private static async Task<(List<AdoAccount>, string defaultAccountName)> GetAccountsAsync(AdoConnection connection, CancellationToken cancellationToken)
+    {
         List<AdoAccount> results = new();
 
-        using (VssConnection vsspsConnection = new VssConnection(new Uri("https://app.vssps.visualstudio.com"), credentials))
+        using (VssConnection vsspsConnection = new(new Uri("https://app.vssps.visualstudio.com"), new VssOAuthAccessTokenCredential(connection.AccessToken)))
         {
             AccountHttpClient accountsClient = await vsspsConnection.GetClientAsync<AccountHttpClient>(cancellationToken);
             IEnumerable<Account> accounts = await accountsClient.GetAccountsByMemberAsync(vsspsConnection.AuthorizedIdentity.Id, cancellationToken: cancellationToken);
-            foreach (Account account in accounts
-                .Where(a => a.AccountStatus == AccountStatus.None || a.AccountStatus == AccountStatus.Enabled)
-                .OrderBy(a => a.AccountName))
+            foreach (Account account in accounts.Where(a => a.AccountStatus == AccountStatus.None || a.AccountStatus == AccountStatus.Enabled))
             {
-                results.Add(new AdoAccount()
+                results.Add(new()
                 {
+                    Id = account.AccountId,
                     Name = account.AccountName,
+                    Uri = account.AccountUri,
                 });
             }
         }
 
-        return results;
+        string defaultAccountName = results.FirstOrDefault()?.Name;
+        results.Sort();
+        return (results, defaultAccountName);
     }
 
-    public static async Task UpdateProjects(AdoConnection connection, AdoAccount account, CancellationToken cancellationToken)
+    private static async Task<(List<AdoProject>, string defaultProjectName)> GetProjectsAsync(AdoConnection connection, AdoAccount account, CancellationToken cancellationToken)
     {
-        AdoConnectionInternal connectionInternal = (AdoConnectionInternal)connection;
+        List<AdoProject> results = new();
+        ProjectHttpClient projectClient = await connection.Connect(account).GetClientAsync<ProjectHttpClient>(cancellationToken);
 
-        if (connectionInternal.Connection == null || connectionInternal.AccountName != account.Name)
+        IPagedList<TeamProjectReference> page = null;
+        do
         {
-            //connectionInternal.Connection = new VssConnection();
-        }
+            page = await projectClient.GetProjects(continuationToken: page?.ContinuationToken);
 
-        await Task.CompletedTask;
+            foreach (TeamProjectReference project in page.Where(p => p.State == ProjectState.WellFormed))
+            {
+                results.Add(new()
+                {
+                    Id = project.Id,
+                    Abbreviation = project.Abbreviation,
+                    Name = project.Name,
+                    Description = project.Description,
+                    Url = project.Url,
+                    DefaultTeamImageUrl = project.DefaultTeamImageUrl,
+                });
+            }
+        }
+        while (page.ContinuationToken != null);
+
+        string defaultProjectName = results.FirstOrDefault()?.Name;
+        results.Sort();
+        return (results, defaultProjectName);
     }
 }

@@ -8,7 +8,8 @@
     x:Class="MyDash.MainPage"
     x:ClassModifier="internal"
     x:DataType="{x:Type model:MainModel}"
-    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}">
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
+    Loaded="OnLoaded">
 
     <ContentPage.Resources>
         <DataTemplate x:Key="PullRequestsTemplate" x:DataType="{x:Type model:AppState}">
@@ -23,11 +24,13 @@
     </ContentPage.Resources>
 
     <VerticalStackLayout Margin="8">
-        <HorizontalStackLayout Margin="0,0,0,8">
-            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" />
-            <Picker ItemsSource="{Binding AppModel.AdoModel.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentProject}" />
+        <HorizontalStackLayout Margin="0,0,0,8" Spacing="4">
+            <Label Text="Account:" VerticalOptions="Center" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" VerticalOptions="Center" />
+            <Label Text="Project:" VerticalOptions="Center" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" VerticalOptions="Center" />
         </HorizontalStackLayout>
-        <Grid
+        <Grid x:Name="contentHolder"
             BindableLayout.ItemsSource="{Binding AppModel.State, Converter={StaticResource ObjectToArrayConverter}}"
             BindableLayout.ItemTemplateSelector="{StaticResource MainTemplateSelector}" />
     </VerticalStackLayout>

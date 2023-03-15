@@ -2,13 +2,12 @@
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class LoginPage : ContentPage
+public partial class LoginPage : ContentPage, IUpdatable
 {
     public LoginModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;
@@ -21,17 +20,17 @@ public partial class LoginPage : ContentPage
 
     private void OnLoaded(object sender, EventArgs args)
     {
-        this.StartLogin();
+        this.StartUpdate();
     }
 
-    private void OnUnloaded(object sender, EventArgs args)
+    public void StartUpdate()
     {
-        this.cancellationTokenSource?.Cancel();
-        this.cancellationTokenSource = null;
-    }
+        if (this.cancellationTokenSource != null)
+        {
+            // Already updating
+            return;
+        }
 
-    private void StartLogin()
-    {
         TaskUtility.FileAndForget(async () =>
         {
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -39,7 +38,7 @@ public partial class LoginPage : ContentPage
 
             try
             {
-                await this.Login(this.cancellationTokenSource.Token);
+                await this.UpdateAsync(this.cancellationTokenSource.Token);
             }
             catch (Exception ex)
             {
@@ -53,17 +52,10 @@ public partial class LoginPage : ContentPage
         });
     }
 
-    private async Task Login(CancellationToken cancellationToken)
+    private async Task UpdateAsync(CancellationToken cancellationToken)
     {
-        AdoModel adoModel = this.Model.AppModel.AdoModel;
-        adoModel.Authentication = await AdoConnectionUtility.GetConnectionAsync(cancellationToken);
-        IEnumerable<AdoAccount> accounts = await AdoUtility.GetAccounts(adoModel.Authentication, cancellationToken);
-
-        adoModel.Accounts.Clear();
-        foreach (AdoAccount account in accounts)
-        {
-            adoModel.Accounts.Add(account);
-        }
+        AdoModel ado = this.Model.AppModel.AdoModel;
+        ado.Connection = await AdoConnectionUtility.GetConnectionAsync(cancellationToken);
 
         this.Model.AppModel.State = AppState.PullRequests;
     }
@@ -75,6 +67,6 @@ public partial class LoginPage : ContentPage
 
     private void OnRetryClicked(object sender, EventArgs args)
     {
-        this.StartLogin();
+        this.StartUpdate();
     }
 }

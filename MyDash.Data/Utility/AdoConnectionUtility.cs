@@ -39,7 +39,7 @@ public static class AdoConnectionUtility
             .WithDefaultRedirectUri()
             .Build();
 
-        StorageCreationProperties storageProperties = new StorageCreationPropertiesBuilder(AdoConnectionUtility.TokenCacheFileName, MsalCacheHelper.UserRootDirectory)
+        StorageCreationProperties storageProperties = new StorageCreationPropertiesBuilder(AdoConnectionUtility.TokenCacheFileName, FileUtility.UserRootDirectory)
             .WithLinuxKeyring(
                 AdoConnectionUtility.LinuxKeyRingSchema,
                 AdoConnectionUtility.LinuxKeyRingCollection,
@@ -63,10 +63,10 @@ public static class AdoConnectionUtility
         }
         catch (MsalUiRequiredException ex)
         {
-            authentication = await application.AcquireTokenInteractive(scopes).WithClaims(ex.Claims).ExecuteAsync();
+            authentication = await application.AcquireTokenInteractive(scopes).WithClaims(ex.Claims).ExecuteAsync(cancellationToken);
         }
 
-        return new AdoConnectionInternal()
+        return new AdoConnection()
         {
             AccessToken = authentication.AccessToken,
             UserName = authentication.Account.Username,
