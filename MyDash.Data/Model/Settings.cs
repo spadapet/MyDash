@@ -2,7 +2,7 @@
 
 namespace MyDash.Data.Model;
 
-public sealed class Settings : PropertyNotifier, ICloneable
+public sealed class Settings : PropertyNotifier, ICopyFrom<Settings>, ICloneable
 {
     object ICloneable.Clone()
     {

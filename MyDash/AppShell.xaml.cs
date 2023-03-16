@@ -9,6 +9,7 @@ namespace MyDash;
 
 public partial class AppShell : Shell, IUpdatable
 {
+    public static new AppShell Current => (AppShell)Shell.Current;
     public ShellModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;
 
@@ -66,5 +67,10 @@ public partial class AppShell : Shell, IUpdatable
         {
             updatableChild.StartUpdate();
         }
+    }
+
+    private void OnNavigated(object sender, ShellNavigatedEventArgs args)
+    {
+        this.pageTitleLabel.Text = this.CurrentPage?.Title;
     }
 }

@@ -12,7 +12,7 @@
     <Grid>
         <VerticalStackLayout x:Name="NormalLayout" IsVisible="{Binding HasError, Converter={StaticResource InverseBoolConverter}}" HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
             <ActivityIndicator IsRunning="True" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" />
-            <Label HorizontalOptions="Center" ToolTipProperties.Text="Hello">
+            <Label HorizontalOptions="Center">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Logging in " />

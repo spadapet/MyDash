@@ -2,15 +2,26 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:MyDash.Data;assembly=MyDash.Data"
     xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
     x:Class="MyDash.PullRequestsPage"
     x:ClassModifier="internal"
     x:DataType="{x:Type model:PullRequestsModel}"
     BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
-    Loaded="OnLoaded">
+    Loaded="OnLoaded"
+    Unloaded="OnUnloaded"
+    Title="{x:Static data:DataResource.PullRequestsTitle}">
 
     <Grid>
-        <Label>Pull Requests</Label>
+        <ListView ItemsSource="{Binding PullRequests}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type model:AdoPullRequest}">
+                    <ViewCell>
+                        <Label Text="{Binding Title}" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 
 </ContentPage>

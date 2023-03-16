@@ -8,22 +8,35 @@
     x:Class="MyDash.AppShell"
     x:ClassModifier="internal"
     x:DataType="{x:Type model:ShellModel}"
+    x:Name="shell"
     BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
     Shell.FlyoutBehavior="Flyout"
-    Title="{x:Static data:DataResource.AppName}"
-    Loaded="OnLoaded">
+    Loaded="OnLoaded"
+    Navigated="OnNavigated">
 
-    <ShellContent
-        Route="PullRequests"
-        Title="{x:Static data:DataResource.PullRequestsTitle}"
-        ContentTemplate="{DataTemplate local:PullRequestsPage}" />
+    <FlyoutItem Route="PullRequests" Title="{x:Static data:DataResource.PullRequestsTitle}">
+        <Tab Route="All" Title="{x:Static data:DataResource.PullRequestsAll}">
+            <ShellContent ContentTemplate="{DataTemplate local:PullRequestsAllPage}" />
+        </Tab>
+        <Tab Route="Mine?page=mine" Title="{x:Static data:DataResource.PullRequestsMine}">
+            <ShellContent ContentTemplate="{DataTemplate local:PullRequestsMinePage}" />
+        </Tab>
+    </FlyoutItem>
 
     <Shell.TitleView>
         <HorizontalStackLayout>
-            <Label Text="Account:" VerticalOptions="Center" />
-            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" VerticalOptions="Center" />
-            <Label Text="Project:" VerticalOptions="Center" />
-            <Picker ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" VerticalOptions="Center" />
+            <HorizontalStackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="8,0,4,0" />
+                    <Setter Property="VerticalOptions" Value="Center" />
+                </Style>
+            </HorizontalStackLayout.Resources>
+            <Label x:Name="pageTitleLabel" />
+            <Line HeightRequest="20" VerticalOptions="Center" StrokeThickness="2" Stroke="Red" />
+            <Label Text="Account:" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" />
+            <Label Text="Project:" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" />
         </HorizontalStackLayout>
     </Shell.TitleView>
 

@@ -119,11 +119,18 @@
   </resheader>
   <data name="AppName" xml:space="preserve">
     <value>My Dashboard</value>
+    <comment>Title bar for app</comment>
   </data>
-  <data name="DashboardName" xml:space="preserve">
-    <value>Dashboard</value>
+  <data name="PullRequestsAll" xml:space="preserve">
+    <value>All</value>
+    <comment>PR tab name</comment>
+  </data>
+  <data name="PullRequestsMine" xml:space="preserve">
+    <value>Mine</value>
+    <comment>PR tab name</comment>
   </data>
   <data name="PullRequestsTitle" xml:space="preserve">
     <value>Pull Requests</value>
+    <comment>Flyout name</comment>
   </data>
 </root>

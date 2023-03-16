@@ -2,25 +2,63 @@
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
 using System;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class PullRequestsPage : ContentPage, IUpdatable
+public sealed class PullRequestsAllPage : PullRequestsPage
+{
+    public PullRequestsAllPage()
+        : base(PullRequestsType.All)
+    { }
+}
+
+public sealed class PullRequestsMinePage : PullRequestsPage
+{
+    public PullRequestsMinePage()
+        : base(PullRequestsType.Mine)
+    { }
+}
+
+public abstract partial class PullRequestsPage : ContentPage, IUpdatable
 {
     public PullRequestsModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;
+    private AdoAccount currentAccount;
+    private AdoProject currentProject;
 
-    public PullRequestsPage()
+    public PullRequestsPage(PullRequestsType pullRequestsType)
     {
-        this.Model = new PullRequestsModel(App.Current.Model);
+        this.Model = new PullRequestsModel(App.Current.Model, pullRequestsType);
         this.InitializeComponent();
     }
 
-    private void OnLoaded(object sender, EventArgs args)
+    protected void OnLoaded(object sender, EventArgs args)
     {
         this.StartUpdate();
+    }
+
+    protected void OnUnloaded(object sender, EventArgs e)
+    {
+        this.ClearCurrent();
+    }
+
+    private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs args)
+    {
+        bool all = string.IsNullOrEmpty(args.PropertyName);
+
+        if (this.currentAccount == sender)
+        {
+            if (all || args.PropertyName == nameof(this.currentAccount.CurrentProject))
+            {
+                if (this.currentProject != this.currentAccount.CurrentProject)
+                {
+                    this.StartUpdate();
+                }
+            }
+        }
     }
 
     public void StartUpdate()
@@ -53,9 +91,29 @@ public partial class PullRequestsPage : ContentPage, IUpdatable
 
     private async Task UpdateAsync(CancellationToken cancellationToken)
     {
-        //AdoModel ado = this.Model.AppModel.AdoModel;
-        //AdoProject project = ado.CurrentAccount?.CurrentProject;
+        this.ClearCurrent();
 
-        await Task.Delay(0, cancellationToken);
+        AdoModel ado = this.Model.AppModel.AdoModel;
+        if (ado.CurrentAccount is AdoAccount account)
+        {
+            this.currentAccount = account;
+            this.currentAccount.PropertyChanged += this.OnModelPropertyChanged;
+
+            if (this.currentAccount.CurrentProject is AdoProject project)
+            {
+                this.currentProject = project;
+                this.Model.PullRequests = await AdoUtility.UpdatePullRequestsAsync(this.Model.PullRequestsType, ado.Connection, ado.CurrentAccount, project, cancellationToken);
+            }
+        }
+    }
+
+    private void ClearCurrent()
+    {
+        if (this.currentAccount != null)
+        {
+            this.currentAccount.PropertyChanged -= this.OnModelPropertyChanged;
+            this.currentAccount = null;
+            this.currentProject = null;
+        }
     }
 }

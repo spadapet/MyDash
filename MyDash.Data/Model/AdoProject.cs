@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MyDash.Data.Model;
 
@@ -10,6 +12,18 @@ public sealed class AdoProject : IComparable, IComparable<AdoProject>, IEquatabl
     public string Description { get; set; }
     public string Url { get; set; }
     public string DefaultTeamImageUrl { get; set; }
+
+    public Dictionary<PullRequestsType, ObservableCollection<AdoPullRequest>> PullRequests { get; } = new();
+
+    public ObservableCollection<AdoPullRequest> EnsurePullRequests(PullRequestsType type)
+    {
+        if (!this.PullRequests.TryGetValue(type, out var prs))
+        {
+            this.PullRequests[type] = prs = new();
+        }
+
+        return prs;
+    }
 
     public override string ToString()
     {

@@ -70,11 +70,20 @@ namespace MyDash.Data {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dashboard.
+        ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string DashboardName {
+        public static string PullRequestsAll {
             get {
-                return ResourceManager.GetString("DashboardName", resourceCulture);
+                return ResourceManager.GetString("PullRequestsAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mine.
+        /// </summary>
+        public static string PullRequestsMine {
+            get {
+                return ResourceManager.GetString("PullRequestsMine", resourceCulture);
             }
         }
         
