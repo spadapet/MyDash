@@ -67,28 +67,15 @@ public partial class App : Application
         // Check if the last window is being closed
         if (this.Windows.Count <= 1)
         {
-            try
-            {
-                using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4)))
-                {
-                    this.SaveStateAsync(cancellationTokenSource.Token).Wait(cancellationTokenSource.Token);
-                }
-            }
-            catch
-            {
-                // No big deal if settings can't be saved
-            }
-            finally
-            {
-                this.Model = null;
-            }
+            ExceptionUtility.IgnoreExceptions(this.SaveState);
+            this.Model = null;
         }
     }
 
-    private async Task SaveStateAsync(CancellationToken cancellationToken)
+    private void SaveState()
     {
         string json = this.Model.Serialize();
-        await File.WriteAllTextAsync(FileUtility.AppModelFile, json, cancellationToken);
+        File.WriteAllText(FileUtility.AppModelFile, json);
     }
 
     public async Task LoadStateAsync(CancellationToken cancellationToken)
@@ -148,7 +135,7 @@ public partial class App : Application
                 break;
 
             default:
-                EnsureMainPage<MainPage>();
+                EnsureMainPage<AppShell>();
                 break;
         }
     }

@@ -5,5 +5,5 @@ public enum AppState
     None,
     Loading,
     Login,
-    PullRequests,
+    Shell,
 }

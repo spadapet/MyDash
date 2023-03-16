@@ -35,16 +35,4 @@
         <ProjectReference Include="..\MyDash.Controls\MyDash.Controls.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="PullRequestsPage.xaml.cs">
-        <DependentUpon>PullRequestsPage.xaml</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <MauiXaml Update="PullRequestsPage.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </MauiXaml>
-    </ItemGroup>
-
 </Project>

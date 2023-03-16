@@ -57,7 +57,7 @@ public partial class LoginPage : ContentPage, IUpdatable
         AdoModel ado = this.Model.AppModel.AdoModel;
         ado.Connection = await AdoConnectionUtility.GetConnectionAsync(cancellationToken);
 
-        this.Model.AppModel.State = AppState.PullRequests;
+        this.Model.AppModel.State = AppState.Shell;
     }
 
     private void OnCancelClicked(object sender, EventArgs args)

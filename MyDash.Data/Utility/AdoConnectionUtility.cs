@@ -17,7 +17,7 @@ public static class AdoConnectionUtility
     private const string Authority = "https://login.windows.net/common";
     private const string VisualStudioIdeClientId = "872cd9fa-d31f-45e0-9eab-6e460a02d1f1";
     private const string AzureDevOpsScope = "499b84ac-1321-427f-aa17-267ca6975798/user_impersonation";
-    private const string TokenCacheFileName = "MyDashTokenCache.bin";
+    private const string TokenCacheFileName = "TokenCache.bin";
 
     // For Mac
     public const string KeyChainServiceName = "myapp_msal_service";

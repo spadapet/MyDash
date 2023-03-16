@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace MyDash.Data.Model;
 
@@ -19,6 +19,7 @@ public sealed class AppModel : PropertyNotifier, IDisposable
     public Settings Settings { get; } = new Settings();
 
     private AppState state = AppState.Loading;
+    [JsonIgnore]
     public AppState State
     {
         get => this.state;
@@ -32,24 +33,24 @@ public sealed class AppModel : PropertyNotifier, IDisposable
         set => this.SetProperty(ref this.adoModel, value);
     }
 
-    private static JsonSerializerOptions JsonSerializerOptions => new()
+    private static JsonSerializerSettings JsonSerializerSettings => new()
     {
-        WriteIndented = true,
+        Formatting = Formatting.Indented,
         Converters =
         {
-            new JsonStringEnumConverter()
+            new StringEnumConverter()
         }
     };
 
     public string Serialize()
     {
         this.EnsureValid();
-        return JsonSerializer.Serialize(this, AppModel.JsonSerializerOptions);
+        return JsonConvert.SerializeObject(this, AppModel.JsonSerializerSettings);
     }
 
     public static AppModel Deserialize(string json)
     {
-        AppModel model = JsonSerializer.Deserialize<AppModel>(json, AppModel.JsonSerializerOptions);
+        AppModel model = JsonConvert.DeserializeObject<AppModel>(json, AppModel.JsonSerializerSettings);
         model.EnsureValid();
         return model;
     }

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace MyDash;
 
-public partial class PullRequestsPage : ContentView, IUpdatable
+public partial class PullRequestsPage : ContentPage, IUpdatable
 {
     public PullRequestsModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;

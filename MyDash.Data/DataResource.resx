@@ -123,4 +123,7 @@
   <data name="DashboardName" xml:space="preserve">
     <value>Dashboard</value>
   </data>
+  <data name="PullRequestsTitle" xml:space="preserve">
+    <value>Pull Requests</value>
+  </data>
 </root>

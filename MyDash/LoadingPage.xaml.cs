@@ -26,7 +26,10 @@ public partial class LoadingPage : ContentPage
 
     private async Task Load()
     {
-        await App.Current.LoadStateAsync(CancellationToken.None);
+        using (CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(4)))
+        {
+            await App.Current.LoadStateAsync(cancellationTokenSource.Token);
+        }
 
         App.Current.Model.State = AppState.Login;
     }

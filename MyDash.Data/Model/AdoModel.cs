@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -23,6 +24,7 @@ public sealed class AdoModel : PropertyNotifier, IDisposable
     }
 
     private AdoConnection connection;
+    [JsonIgnore]
     public AdoConnection Connection
     {
         get => this.connection;
@@ -30,6 +32,7 @@ public sealed class AdoModel : PropertyNotifier, IDisposable
     }
 
     private AdoAccount currentAccount;
+    [JsonIgnore]
     public AdoAccount CurrentAccount
     {
         get => this.currentAccount;
@@ -44,6 +47,7 @@ public sealed class AdoModel : PropertyNotifier, IDisposable
     }
 
     private string previousAccountName;
+    [JsonProperty(Order = 1)]
     public string CurrentAccountName
     {
         get => this.CurrentAccount?.Name ?? this.previousAccountName;

@@ -25,7 +25,9 @@ internal static class CollectionUtility
 
                     case 0:
                     default:
-                        destList[destIndex++] = newList[newIndex++];
+                        // Use the old object
+                        destIndex++;
+                        newIndex++;
                         break;
 
                     case > 0:

@@ -2,20 +2,19 @@
 using MyDash.Data.Model;
 using MyDash.Data.Utility;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class MainPage : ContentPage, IUpdatable
+public partial class AppShell : Shell, IUpdatable
 {
-    public MainModel Model { get; }
+    public ShellModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;
 
-    public MainPage()
+    public AppShell()
     {
-        this.Model = new MainModel(App.Current.Model);
+        this.Model = new ShellModel(App.Current.Model);
         this.InitializeComponent();
     }
 
@@ -63,9 +62,9 @@ public partial class MainPage : ContentPage, IUpdatable
             await AdoUtility.UpdateProjectsAsync(ado.Connection, account, cancellationToken);
         }
 
-        foreach (IUpdatable child in this.contentHolder.Children.OfType<IUpdatable>())
+        if (this.CurrentPage is IUpdatable updatableChild)
         {
-            child.StartUpdate();
+            updatableChild.StartUpdate();
         }
     }
 }

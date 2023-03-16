@@ -16,19 +16,18 @@ public static class AdoUtility
 {
     public static async Task UpdateAccountsAsync(this AdoModel model, CancellationToken cancellationToken)
     {
+        string currentAccountName = model.CurrentAccountName;
         var (accounts, defaultAccountName) = await AdoUtility.GetAccountsAsync(model.Connection, cancellationToken);
         model.Accounts.SortedMerge(accounts);
-        string accountName = model.CurrentAccountName ?? defaultAccountName;
-        model.CurrentAccountName = accountName;
+        model.CurrentAccountName = currentAccountName ?? defaultAccountName;
     }
 
     public static async Task UpdateProjectsAsync(AdoConnection connection, AdoAccount account, CancellationToken cancellationToken)
     {
+        string currentProjectName = account.CurrentProjectName;
         var (projects, defaultProjectName) = await AdoUtility.GetProjectsAsync(connection, account, cancellationToken);
         account.Projects.SortedMerge(projects);
-
-        string projectName = account.CurrentProjectName ?? defaultProjectName;
-        account.CurrentProjectName = projectName;
+        account.CurrentProjectName = currentProjectName ?? defaultProjectName;
     }
 
     private static async Task<(List<AdoAccount>, string defaultAccountName)> GetAccountsAsync(AdoConnection connection, CancellationToken cancellationToken)

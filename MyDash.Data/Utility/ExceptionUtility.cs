@@ -37,4 +37,18 @@ public static class ExceptionUtility
             }
         }
     }
+
+    /// <returns>true if there were no exceptions ignored</returns>
+    public static bool IgnoreExceptions(Action action)
+    {
+        try
+        {
+            action();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

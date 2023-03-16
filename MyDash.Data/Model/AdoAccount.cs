@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -13,6 +14,7 @@ public sealed class AdoAccount : PropertyNotifier, IComparable, IComparable<AdoA
     public ObservableCollection<AdoProject> Projects { get; } = new();
 
     private AdoProject currentProject;
+    [JsonIgnore]
     public AdoProject CurrentProject
     {
         get => this.currentProject;
@@ -27,6 +29,7 @@ public sealed class AdoAccount : PropertyNotifier, IComparable, IComparable<AdoA
     }
 
     private string previousProjectName;
+    [JsonProperty(Order = 1)]
     public string CurrentProjectName
     {
         get => this.CurrentProject?.Name ?? this.previousProjectName;

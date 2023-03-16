@@ -77,5 +77,14 @@ namespace MyDash.Data {
                 return ResourceManager.GetString("DashboardName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pull Requests.
+        /// </summary>
+        public static string PullRequestsTitle {
+            get {
+                return ResourceManager.GetString("PullRequestsTitle", resourceCulture);
+            }
+        }
     }
 }

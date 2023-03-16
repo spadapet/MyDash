@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MyDash"
+    xmlns:data="clr-namespace:MyDash.Data;assembly=MyDash.Data"
+    xmlns:model="clr-namespace:MyDash.Data.Model;assembly=MyDash.Data"
+    x:Class="MyDash.AppShell"
+    x:ClassModifier="internal"
+    x:DataType="{x:Type model:ShellModel}"
+    BindingContext="{Binding Model, Source={RelativeSource Mode=Self}}"
+    Shell.FlyoutBehavior="Flyout"
+    Title="{x:Static data:DataResource.AppName}"
+    Loaded="OnLoaded">
+
+    <ShellContent
+        Route="PullRequests"
+        Title="{x:Static data:DataResource.PullRequestsTitle}"
+        ContentTemplate="{DataTemplate local:PullRequestsPage}" />
+
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Label Text="Account:" VerticalOptions="Center" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" VerticalOptions="Center" />
+            <Label Text="Project:" VerticalOptions="Center" />
+            <Picker ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+</Shell>
