@@ -22,22 +22,25 @@
             <ShellContent ContentTemplate="{DataTemplate local:PullRequestsMinePage}" />
         </Tab>
     </FlyoutItem>
-
+    
     <Shell.TitleView>
-        <HorizontalStackLayout>
-            <HorizontalStackLayout.Resources>
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,Auto" ColumnSpacing="4">
+            <Grid.Resources>
                 <Style TargetType="Label">
-                    <Setter Property="Margin" Value="8,0,4,0" />
+                    <Setter Property="Margin" Value="4,0,0,0" />
                     <Setter Property="VerticalOptions" Value="Center" />
                 </Style>
-            </HorizontalStackLayout.Resources>
-            <Label x:Name="pageTitleLabel" />
-            <Line HeightRequest="20" VerticalOptions="Center" StrokeThickness="2" Stroke="Red" />
-            <Label Text="Account:" />
-            <Picker ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" />
-            <Label Text="Project:" />
-            <Picker ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" />
-        </HorizontalStackLayout>
+            </Grid.Resources>
+            <Label x:Name="pageTitleLabel" Grid.Column="0" />
+            <Line Grid.Column="1" HeightRequest="20" VerticalOptions="Center" StrokeThickness="2" Stroke="Red" />
+            <Label Grid.Column="2" Text="Account:" />
+            <Picker Grid.Column="3" ItemsSource="{Binding AppModel.AdoModel.Accounts}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount}" />
+            <Label Grid.Column="4" Text="Project:" />
+            <Picker Grid.Column="5" ItemsSource="{Binding AppModel.AdoModel.CurrentAccount.Projects}" SelectedItem="{Binding AppModel.AdoModel.CurrentAccount.CurrentProject}" />
+            <Label Grid.Column="6" Text="{Binding AppModel.ProgressBar.LoadingText}" IsVisible="{Binding AppModel.ProgressBar.IsLoading}" HorizontalOptions="End" />
+            <Button Grid.Column="7" Text="Cancel" Clicked="OnClickCancel" IsVisible="{Binding AppModel.ProgressBar.IsLoading}" />
+            <ProgressBar Grid.ColumnSpan="8" VerticalOptions="End" Progress="{Binding AppModel.ProgressBar.Progress}" IsVisible="{Binding AppModel.ProgressBar.IsLoading}" />
+        </Grid>
     </Shell.TitleView>
 
 </Shell>

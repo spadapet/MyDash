@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Threading;
 
-namespace MyDash.Data;
+namespace MyDash.Data.Model;
 
 /// <summary>
 /// Represents some ongoing work
@@ -14,6 +15,10 @@ public sealed class WorkData : PropertyNotifier
         this.text = text ?? string.Empty;
         this.cancelAction = cancelAction;
     }
+
+    public WorkData(string text, CancellationTokenSource cancellationTokenSource)
+        : this(text, cancellationTokenSource.Cancel)
+    { }
 
     private string text;
     public string Text

@@ -72,19 +72,24 @@ public abstract partial class PullRequestsPage : ContentPage, IUpdatable
         TaskUtility.FileAndForget(async () =>
         {
             this.cancellationTokenSource = new CancellationTokenSource();
+            WorkData work = new WorkData("Getting pull requests", this.cancellationTokenSource);
+            work.Progress = 1;
 
-            try
+            using (this.Model.AppModel.ProgressBar.Begin(work))
             {
-                await this.UpdateAsync(this.cancellationTokenSource.Token);
-            }
-            catch
-            {
-                // this.Model.SetError(ex);
-                throw;
-            }
-            finally
-            {
-                this.cancellationTokenSource = null;
+                try
+                {
+                    await this.UpdateAsync(this.cancellationTokenSource.Token);
+                }
+                catch (Exception ex)
+                {
+                    this.Model.AppModel.InfoBar.SetError(ex);
+                    throw;
+                }
+                finally
+                {
+                    this.cancellationTokenSource = null;
+                }
             }
         });
     }

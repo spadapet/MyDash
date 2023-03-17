@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace MyDash.Data;
+namespace MyDash.Data.Model;
 
 public enum InfoLevel
 {

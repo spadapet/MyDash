@@ -16,7 +16,13 @@ public sealed class AppModel : PropertyNotifier, IDisposable
         // I'm valid!
     }
 
-    public Settings Settings { get; } = new Settings();
+    public Settings Settings { get; } = new();
+
+    [JsonIgnore]
+    public InfoBar InfoBar { get; } = new();
+
+    [JsonIgnore]
+    public ProgressBar ProgressBar { get; } = new();
 
     private AppState state = AppState.Loading;
     [JsonIgnore]
