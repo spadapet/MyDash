@@ -44,13 +44,13 @@ public sealed class ProgressBar : PropertyNotifier, IProgressBar
     }
 
     public bool IsLoading => this.tasks.Count > 0;
-    public string LoadingText => this.IsLoading ? this.tasks[this.tasks.Count - 1].Work.Text : string.Empty;
-    public double Progress => this.IsLoading ? this.tasks[this.tasks.Count - 1].Work.Progress : 0.0;
+    public string LoadingText => this.IsLoading ? this.tasks[^1].Work.Text : string.Empty;
+    public double Progress => this.IsLoading ? this.tasks[^1].Work.Progress : 0.0;
     public bool IsIndeterminate => this.IsLoading && this.Progress == 0.0;
 
     public IDisposable Begin(WorkData taskData)
     {
-        TaskDataWrapper info = new TaskDataWrapper()
+        TaskDataWrapper info = new()
         {
             Work = taskData
         };

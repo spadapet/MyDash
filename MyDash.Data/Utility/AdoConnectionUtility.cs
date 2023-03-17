@@ -51,8 +51,15 @@ public static class AdoConnectionUtility
                 AdoConnectionUtility.KeyChainAccountName)
             .Build();
 
-        MsalCacheHelper cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
-        cacheHelper.RegisterCache(application.UserTokenCache);
+        try
+        {
+            MsalCacheHelper cacheHelper = await MsalCacheHelper.CreateAsync(storageProperties);
+            cacheHelper.RegisterCache(application.UserTokenCache);
+        }
+        catch
+        {
+            // This shouldn't fail on Windows
+        }
 
         string[] scopes = new string[] { AdoConnectionUtility.AzureDevOpsScope };
         AuthenticationResult authentication;

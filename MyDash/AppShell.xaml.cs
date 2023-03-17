@@ -35,8 +35,10 @@ public partial class AppShell : Shell, IUpdatable
         TaskUtility.FileAndForget(async () =>
         {
             this.cancellationTokenSource = new CancellationTokenSource();
-            WorkData work = new WorkData("Getting pull requests", this.cancellationTokenSource);
-            work.Progress = 1;
+            WorkData work = new("Getting pull requests", this.cancellationTokenSource)
+            {
+                Progress = 1
+            };
 
             using (this.Model.AppModel.ProgressBar.Begin(work))
             {

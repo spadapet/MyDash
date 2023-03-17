@@ -12,16 +12,29 @@
     Unloaded="OnUnloaded"
     Title="{x:Static data:DataResource.PullRequestsTitle}">
 
-    <Grid>
-        <ListView ItemsSource="{Binding PullRequests}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type model:AdoPullRequest}">
-                    <ViewCell>
-                        <Label Text="{Binding Title}" />
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+    <ContentPage.Resources>
+        <DataTemplate x:Key="PullRequestTemplate" x:DataType="{x:Type model:AdoPullRequest}">
+            <ViewCell>
+                <Grid ColumnDefinitions="32,*,Auto" Padding="0,4">
+                    <Image Grid.Column="0" WidthRequest="32" HeightRequest="32" />
+                    <Label Grid.Column="0" Text="😀" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold" />
+                        <Label FontSize="11" TextColor="Gray">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding SourceRefName}" />
+                                    <Span Text=" -> " />
+                                    <Span Text="{Binding TargetRefName}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+                </Grid>
+            </ViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ListView ItemsSource="{Binding PullRequests}" ItemTemplate="{StaticResource PullRequestTemplate}" />
 
 </ContentPage>

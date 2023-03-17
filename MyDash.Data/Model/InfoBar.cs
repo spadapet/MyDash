@@ -68,7 +68,7 @@ public sealed class InfoBar : PropertyNotifier, IInfoBar
         exception = exception.Flatten().FirstOrDefault();
 
         // If the user canceled a task, they don't need to know about it
-        if (!(exception is OperationCanceledException))
+        if (exception is not OperationCanceledException)
         {
             this.SetInfo(InfoLevel.Error, text);
         }
