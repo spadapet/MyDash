@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace MyDash;
 
-public sealed class PullRequestsAllPage : PullRequestsPage
+internal sealed class PullRequestsAllPage : PullRequestsPage
 {
     public PullRequestsAllPage()
         : base(PullRequestsType.All)
     { }
 }
 
-public sealed class PullRequestsMinePage : PullRequestsPage
+internal sealed class PullRequestsMinePage : PullRequestsPage
 {
     public PullRequestsMinePage()
         : base(PullRequestsType.Mine)
     { }
 }
 
-public abstract partial class PullRequestsPage : ContentPage, IUpdatable
+internal abstract partial class PullRequestsPage : ContentPage, IUpdatable
 {
     public PullRequestsModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;

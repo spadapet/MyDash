@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class AppShell : Shell, IUpdatable
+internal partial class AppShell : Shell, IUpdatable
 {
     public static new AppShell Current => (AppShell)Shell.Current;
     public ShellModel Model { get; }

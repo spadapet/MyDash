@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class LoginPage : ContentPage, IUpdatable
+internal partial class LoginPage : ContentPage, IUpdatable
 {
     public LoginModel Model { get; }
     private CancellationTokenSource cancellationTokenSource;
