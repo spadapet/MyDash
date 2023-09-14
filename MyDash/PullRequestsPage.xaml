@@ -14,27 +14,26 @@
 
     <ContentPage.Resources>
         <DataTemplate x:Key="PullRequestTemplate" x:DataType="{x:Type model:AdoPullRequest}">
-            <ViewCell>
-                <Grid ColumnDefinitions="32,*,Auto" Padding="0,4">
-                    <Image Grid.Column="0" WidthRequest="32" HeightRequest="32" />
-                    <Label Grid.Column="0" Text="😀" HorizontalOptions="Center" VerticalOptions="Center" />
-                    <VerticalStackLayout Grid.Column="1">
-                        <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold" />
-                        <Label FontSize="11" TextColor="Gray">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding SourceRefName}" />
-                                    <Span Text=" -> " />
-                                    <Span Text="{Binding TargetRefName}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </VerticalStackLayout>
-                </Grid>
-            </ViewCell>
+            <Grid ColumnDefinitions="32,*,Auto" Padding="0,4">
+                <Image Grid.Column="0" WidthRequest="32" HeightRequest="32" />
+                <Label Grid.Column="0" Text="😀" HorizontalOptions="Center" VerticalOptions="Center" />
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold" />
+                    <Label FontSize="11" TextColor="Gray">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SourceRefName}" />
+                                <Span Text=" -> " />
+                                <Span Text="{Binding TargetRefName}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+            </Grid>
         </DataTemplate>
     </ContentPage.Resources>
 
-    <ListView ItemsSource="{Binding PullRequests}" ItemTemplate="{StaticResource PullRequestTemplate}" />
+    <!--<ListView ItemsSource="{Binding PullRequests}" ItemTemplate="{StaticResource PullRequestTemplate}" />-->
+    <CollectionView ItemsSource="{Binding PullRequests}" ItemTemplate="{StaticResource PullRequestTemplate}" SelectionMode="Single" />
 
 </ContentPage>

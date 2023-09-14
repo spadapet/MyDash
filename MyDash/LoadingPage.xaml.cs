@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class LoadingPage : ContentPage
+internal partial class LoadingPage : ContentPage
 {
     public LoadingPage()
     {

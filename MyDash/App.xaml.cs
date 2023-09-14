@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MyDash;
 
-public partial class App : Application
+internal partial class App : Application
 {
     public static new App Current => (App)Application.Current;
 
